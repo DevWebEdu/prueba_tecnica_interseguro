@@ -6,7 +6,7 @@ Sistema de descomposición QR implementado con una arquitectura de microservicio
 
 ## Requisitos previos
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) instalado y en ejecución.
+- Docker Desktop instalado y en ejecución.
 
 Nada más. No se necesita Go, Node.js ni ningún otro runtime instalado localmente.
 
@@ -47,28 +47,7 @@ Contraseña: password123
 
 ---
 
-## Arquitectura
 
-```
-┌─────────────────────────────────────────────┐
-│                  Frontend                   │
-│           Nginx · Puerto 8080               │
-└────────────────────┬────────────────────────┘
-                     │ HTTP + JWT
-┌────────────────────▼────────────────────────┐
-│               API Go (Go + Fiber)           │
-│  · Autenticación JWT                        │
-│  · Descomposición QR (Gram-Schmidt)         │
-│                Puerto 3000                  │
-└────────────────────┬────────────────────────┘
-                     │ HTTP + JWT (inter-servicio)
-┌────────────────────▼────────────────────────┐
-│          API Node.js (Express)              │
-│  · Estadísticas de matrices (max, min,      │
-│    promedio, suma, diagonal)                │
-│                Puerto 4000                  │
-└─────────────────────────────────────────────┘
-```
 
 **Flujo de una petición:**
 
@@ -80,33 +59,6 @@ Contraseña: password123
 
 ---
 
-## Estructura del proyecto
-
-```
-pruebatecnica_tai/
-├── api-go/                  # API principal en Go
-│   ├── handlers/            # Lógica de los endpoints
-│   ├── middleware/          # Validación JWT
-│   ├── models/              # Estructuras de datos
-│   ├── services/            # Algoritmo de descomposición QR
-│   └── Dockerfile
-├── api-node/                # API de estadísticas en Node.js
-│   ├── src/
-│   │   ├── middleware/      # Validación JWT
-│   │   ├── routes/          # Definición de rutas
-│   │   └── services/        # Cálculo de estadísticas
-│   ├── tests/               # Tests unitarios
-│   └── Dockerfile
-├── frontend/                # Interfaz web estática
-│   ├── index.html
-│   ├── style.css
-│   ├── app.js
-│   ├── nginx.conf
-│   └── Dockerfile
-└── docker-compose.yml
-```
-
----
 
 ## Ejecutar los tests
 
