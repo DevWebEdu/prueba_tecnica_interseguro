@@ -1,7 +1,6 @@
 'use strict';
 
-// nginx proxies /auth/ and /api/ to the Go API — use relative paths
-const API_GO = '';
+const API_GO = 'https://api-go-production-e8de.up.railway.app';
 
 // aca guardamos el token cuando el usuario inicia sesion
 let tokenSesion = null;
