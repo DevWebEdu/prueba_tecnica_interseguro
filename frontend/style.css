@@ -1,0 +1,407 @@
+/* reset basico */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── variables modo claro ──────────────────────────────────────────────────── */
+:root {
+  --bg:          #F9FAFB;
+  --surface:     #FFFFFF;
+  --surface-2:   #F3F4F6;
+  --border:      #E5E7EB;
+  --text:        #111827;
+  --text-muted:  #6B7280;
+  --text-subtle: #9CA3AF;
+  --azul:        #2563EB;
+  --azul-hover:  #1D4ED8;
+  --rojo-bg:     #FEF2F2;
+  --rojo-text:   #991B1B;
+  --rojo-borde:  #FECACA;
+  --verde-bg:    #F0FDF4;
+  --verde-text:  #166534;
+  --verde-borde: #BBF7D0;
+  --radio:       6px;
+}
+
+/* ── variables modo oscuro ─────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --bg:          #0F172A;
+  --surface:     #1E293B;
+  --surface-2:   #273448;
+  --border:      #334155;
+  --text:        #F1F5F9;
+  --text-muted:  #94A3B8;
+  --text-subtle: #64748B;
+  --azul:        #3B82F6;
+  --azul-hover:  #2563EB;
+  --rojo-bg:     #3B0A0A;
+  --rojo-text:   #FCA5A5;
+  --rojo-borde:  #7F1D1D;
+  --verde-bg:    #052E16;
+  --verde-text:  #86EFAC;
+  --verde-borde: #14532D;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: background .2s, color .2s;
+}
+
+/* ── header ────────────────────────────────────────────────────────────────── */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-shrink: 0;
+  transition: background .2s, border-color .2s;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-brand h1 {
+  font-size: .93rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.header-brand h1 span {
+  color: var(--text-subtle);
+  font-weight: 300;
+  margin: 0 6px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#auth-status {
+  font-size: .82rem;
+  color: var(--text-muted);
+}
+
+/* boton de tema y cerrar sesion comparten estilo base */
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 5px 10px;
+  border-radius: var(--radio);
+  cursor: pointer;
+  font-size: .82rem;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background .15s, border-color .15s;
+  line-height: 1;
+}
+.btn-ghost:hover { background: var(--surface-2); border-color: var(--text-subtle); }
+
+#logout-btn { padding: 5px 14px; }
+
+/* ── main ──────────────────────────────────────────────────────────────────── */
+main {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  flex: 1;
+}
+
+/* ── animaciones ───────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── tarjetas ──────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radio);
+  padding: 28px 32px;
+  margin-bottom: 16px;
+  animation: fadeIn .25s ease both;
+  transition: background .2s, border-color .2s;
+}
+
+.card h2 {
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── login ─────────────────────────────────────────────────────────────────── */
+#login-section {
+  display: flex;
+  justify-content: center;
+  padding-top: 48px;
+}
+
+.login-card { width: 100%; max-width: 380px; padding: 40px; }
+
+.login-header { margin-bottom: 28px; }
+
+.login-header h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+  border: none;
+  padding: 0;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.login-header p { font-size: .85rem; color: var(--text-muted); }
+
+/* ── formularios ───────────────────────────────────────────────────────────── */
+.form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
+
+.form-group label { font-size: .78rem; font-weight: 600; color: var(--text-muted); }
+
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+  border: 1px solid var(--border);
+  border-radius: var(--radio);
+  padding: 9px 12px;
+  font-size: .9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s, background .2s, color .2s;
+  background: var(--surface);
+  color: var(--text);
+  width: 100%;
+}
+
+input:focus {
+  border-color: var(--azul);
+  box-shadow: 0 0 0 3px rgba(59,130,246,.15);
+}
+
+/* ── botones ───────────────────────────────────────────────────────────────── */
+.btn {
+  background: var(--azul);
+  color: #fff;
+  border: none;
+  border-radius: var(--radio);
+  padding: 9px 20px;
+  font-size: .88rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background .15s;
+  display: inline-flex;
+  align-items: center;
+}
+.btn:hover    { background: var(--azul-hover); }
+.btn:active   { opacity: .9; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.btn-sm { padding: 6px 12px; font-size: .8rem; }
+
+.btn-outline {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+.btn-outline:hover { background: var(--surface-2); border-color: var(--text-subtle); }
+
+/* ── controles de la matriz ────────────────────────────────────────────────── */
+.matrix-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.matrix-controls label { font-size: .82rem; color: var(--text-muted); white-space: nowrap; }
+.matrix-controls input[type="number"] { width: 64px; text-align: center; padding: 7px 8px; }
+
+.matrix-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .8rem;
+  color: var(--text-subtle);
+  margin-bottom: 16px;
+}
+
+/* ── grilla de celdas ──────────────────────────────────────────────────────── */
+#matrix-grid { overflow-x: auto; margin-bottom: 20px; }
+#matrix-grid table { border-collapse: separate; border-spacing: 4px; }
+#matrix-grid td { padding: 0; }
+#matrix-grid input {
+  width: 72px;
+  text-align: center;
+  padding: 7px 4px;
+  font-size: .87rem;
+}
+
+/* ── resultados ────────────────────────────────────────────────────────────── */
+#results { display: none; }
+
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 580px) { .results-grid { grid-template-columns: 1fr; } }
+
+.matrix-wrap { overflow-x: auto; }
+
+table.matrix-table {
+  border-collapse: collapse;
+  font-size: .8rem;
+  font-variant-numeric: tabular-nums;
+  width: 100%;
+}
+
+table.matrix-table th,
+table.matrix-table td {
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  text-align: right;
+  min-width: 80px;
+  white-space: nowrap;
+}
+
+table.matrix-table th {
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-weight: 600;
+  text-align: center;
+  font-size: .72rem;
+  letter-spacing: .03em;
+}
+
+
+/* ── estadisticas ──────────────────────────────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.stat-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radio);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: background .2s;
+}
+
+.stat-card .stat-label {
+  font-size: .68rem;
+  color: var(--text-subtle);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.stat-card .stat-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── badges ────────────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: .73rem;
+  font-weight: 600;
+}
+.badge-yes { background: var(--verde-bg); color: var(--verde-text); }
+.badge-no  { background: var(--rojo-bg);  color: var(--rojo-text); }
+
+/* ── titulo de seccion ─────────────────────────────────────────────────────── */
+.section-title {
+  font-size: .7rem;
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* ── alertas ───────────────────────────────────────────────────────────────── */
+.alert {
+  padding: 10px 14px;
+  border-radius: var(--radio);
+  font-size: .86rem;
+  margin-bottom: 14px;
+  display: none;
+}
+.alert-error   { background: var(--rojo-bg);  color: var(--rojo-text);  border: 1px solid var(--rojo-borde);  }
+.alert-success { background: var(--verde-bg); color: var(--verde-text); border: 1px solid var(--verde-borde); }
+
+/* ── spinner ───────────────────────────────────────────────────────────────── */
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+/* ── separador ─────────────────────────────────────────────────────────────── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 22px 0; }
+
+/* ── nota de verificacion ──────────────────────────────────────────────────── */
+.verify-note { margin-top: 16px; font-size: .78rem; color: var(--text-subtle); line-height: 1.6; }
+
+/* ── secciones ocultas ─────────────────────────────────────────────────────── */
+#login-section  { display: flex; }
+#matrix-section { display: none; }
+
+/* ── pie de pagina ─────────────────────────────────────────────────────────── */
+footer {
+  text-align: center;
+  padding: 18px;
+  font-size: .74rem;
+  color: var(--text-subtle);
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+  transition: background .2s, border-color .2s;
+}

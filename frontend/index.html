@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interseguro — Factorización QR</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- encabezado principal -->
+<header>
+  <div class="header-brand">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="9" height="9" rx="2" fill="#2563EB"/>
+      <rect x="12" y="1" width="9" height="9" rx="2" fill="#BFDBFE"/>
+      <rect x="1" y="12" width="9" height="9" rx="2" fill="#BFDBFE"/>
+      <rect x="12" y="12" width="9" height="9" rx="2" fill="#EFF6FF"/>
+    </svg>
+    <h1>Interseguro <span>·</span> Factorización QR</h1>
+  </div>
+  <div class="header-actions">
+    <span id="auth-status"></span>
+
+    <!-- boton para cambiar entre tema claro y oscuro -->
+    <button id="theme-btn" class="btn-ghost" title="Cambiar tema" aria-label="Cambiar tema">
+      <!-- el icono cambia segun el tema activo -->
+      <svg id="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg id="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+
+    <button id="logout-btn" class="btn-ghost">Cerrar sesión</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- formulario de login -->
+  <section id="login-section">
+    <div class="card login-card">
+      <div class="login-header">
+        <h2>Iniciar sesión</h2>
+        <p>Accede al sistema de factorización QR de matrices</p>
+      </div>
+
+      <div id="login-alert" class="alert"></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label for="username">Usuario</label>
+          <input type="text" id="username" value="admin" required autocomplete="username" placeholder="Tu usuario" />
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" value="password123" required autocomplete="current-password" placeholder="Tu contraseña" />
+        </div>
+        <button type="submit" class="btn" style="width:100%;margin-top:6px;justify-content:center;padding:10px;">
+          Iniciar sesión
+        </button>
+      </form>
+
+      <p style="margin-top:16px;font-size:.76rem;color:var(--text-subtle);text-align:center;">
+        Demo: <strong style="color:var(--text-muted)">admin</strong> / <strong style="color:var(--text-muted)">password123</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- seccion principal con la matriz y los resultados -->
+  <section id="matrix-section">
+
+    <!-- configuracion de la matriz de entrada -->
+    <div class="card">
+      <h2>Configurar matriz</h2>
+
+      <div class="matrix-controls">
+        <label for="rows">Filas (m):</label>
+        <input type="number" id="rows" value="3" min="1" max="10" />
+        <label for="cols">Columnas (n):</label>
+        <input type="number" id="cols" value="3" min="1" max="10" />
+        <button type="button" id="build-btn" class="btn btn-outline btn-sm">Generar grilla</button>
+        <button type="button" id="example-btn" class="btn btn-outline btn-sm">Cargar ejemplo</button>
+      </div>
+
+      <p class="matrix-info">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        La factorización QR requiere <strong style="margin:0 3px">m ≥ n</strong> (filas ≥ columnas).
+      </p>
+
+      <form id="calc-form">
+        <div id="matrix-alert" class="alert"></div>
+        <div id="matrix-grid"></div>
+        <div id="calc-alert" class="alert"></div>
+        <button type="submit" class="btn">Calcular factorización QR</button>
+      </form>
+    </div>
+
+    <!-- resultados de la descomposicion -->
+    <div id="results">
+
+      <!-- matrices Q y R con su previsualizacion heatmap -->
+      <div class="card">
+        <h2>Matrices Q y R</h2>
+        <div id="original-matrix" style="margin-bottom:24px;"></div>
+        <div class="results-grid">
+          <div id="q-matrix"></div>
+          <div id="r-matrix"></div>
+        </div>
+
+<p class="verify-note">
+          Verificacion: A = Q · R &nbsp;·&nbsp; Las columnas de Q son ortonormales &nbsp;·&nbsp; R es triangular superior
+        </p>
+      </div>
+
+      <!-- estadisticas calculadas por la api de node -->
+      <div class="card">
+        <h2>Estadísticas</h2>
+        <div id="q-stats-container" style="margin-bottom:20px;"></div>
+        <hr class="divider">
+        <div id="r-stats-container" style="margin-bottom:20px;"></div>
+        <hr class="divider">
+        <div id="combined-stats-container"></div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Interseguro &mdash; Prueba Técnica &mdash; Factorización QR de Matrices
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

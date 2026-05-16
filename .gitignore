@@ -1,0 +1,14 @@
+# dependencias de node
+node_modules/
+
+# variables de entorno locales
+.env
+.env.local
+
+# binarios compilados de go
+*.exe
+*.out
+
+# archivos del sistema
+.DS_Store
+Thumbs.db

@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  api-node:
+    build: ./api-node
+    container_name: interseguro-api-node
+    ports:
+      - "4000:4000"
+    environment:
+      - JWT_SECRET=interseguro-secret-2024
+      - PORT=4000
+    networks:
+      - interseguro-network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api-go:
+    build: ./api-go
+    container_name: interseguro-api-go
+    ports:
+      - "3000:3000"
+    environment:
+      - JWT_SECRET=interseguro-secret-2024
+      - NODE_API_URL=http://api-node:4000
+      - PORT=3000
+    depends_on:
+      api-node:
+        condition: service_healthy
+    networks:
+      - interseguro-network
+
+  frontend:
+    build: ./frontend
+    container_name: interseguro-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - api-go
+      - api-node
+    networks:
+      - interseguro-network
+
+networks:
+  interseguro-network:
+    driver: bridge
